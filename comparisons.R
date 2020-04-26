@@ -15,3 +15,54 @@ onlyny = filter(us_states, state == "New York")[c(1,4,5)]%>%
   mutate(daily_deaths = deaths - lag(deaths, default = deaths[1]))
 
 sidebyside = left_join(us_byday, left_join(nony_byday,onlyny, by="date", suffix = c(".nony", ".ny")), by="date")
+
+#
+#
+
+# Libraries
+library(ggplot2)
+
+cbp <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#000000")
+#abridged version ^^^
+
+# Plot
+ggplot(sidebyside, aes(x=date)) +
+  geom_line(aes(y=cases_usa), color=cbp[1], size = .85) +
+  geom_line(aes(y=cases.nony),color=cbp[8], size = .85) +
+  geom_line(aes(y=cases.ny),color=cbp[3], size = .85) +
+  scale_y_log10() +
+  theme_minimal()
+
+ggplot(sidebyside[40:95,], aes(x=date)) +
+  geom_line(aes(y=daily_cases_usa), color=cbp[1], size = .85) +
+  geom_line(aes(y=daily_cases.nony),color=cbp[8], size = .85) +
+  geom_line(aes(y=daily_cases.ny),color=cbp[3], size = .85) +
+  geom_line(aes(y=daily_deaths_usa), color=cbp[9], size = .85) +
+  geom_line(aes(y=daily_deaths.nony),color=cbp[7], size = .85) +
+  geom_line(aes(y=daily_deaths.ny),color=cbp[6], size = .85) +
+  scale_y_log10() +
+  theme_minimal()
+
+ggplot(sidebyside[40:95,], aes(x=date)) +
+  geom_line(aes(y=daily_cases_usa, color="Nationwide Cases"), size = .85) +
+  geom_line(aes(y=daily_cases.nony,color="Cases Outside NYS"), size = .85) +
+  geom_line(aes(y=daily_cases.ny,color="NYS Cases"), size = .85) +
+  geom_line(aes(y=daily_deaths_usa, color="Nationwide Deaths"), size = .85) +
+  geom_line(aes(y=daily_deaths.nony,color="Deaths Outside NYS"), size = .85) +
+  geom_line(aes(y=daily_deaths.ny,color="NYS Deaths"), size = .85) +
+  scale_colour_manual("", 
+                       breaks = c("Nationwide Cases", "Cases Outside NYS", "NYS Cases","Nationwide Deaths","Deaths Outside NYS","NYS Deaths"),
+                       values = 1:6) +
+  xlab("Date") +
+  ylab("Daily Cases") +
+  labs(title = "Daily COVID-19 Cases in the US")+
+  scale_y_log10() +
+  theme_minimal()
+
+ggplot(us_states, aes(date, cases, color = factor(state))) +
+  geom_point()+
+  theme()
+
+??ggplot2::theme
+
+1:6
