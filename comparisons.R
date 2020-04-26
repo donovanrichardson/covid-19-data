@@ -1,4 +1,6 @@
 library(dplyr)
+library(readr)
+us_states <- read_csv("us-states.csv")
 
 nony = filter(us_states, state!= "New York")
 
@@ -25,7 +27,7 @@ library(ggplot2)
 cbp <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#000000")
 #abridged version ^^^
 
-# Plot
+# Log plot of cases in US, NY, and US minus NY
 ggplot(sidebyside, aes(x=date)) +
   geom_line(aes(y=cases_usa), color=cbp[1], size = .85) +
   geom_line(aes(y=cases.nony),color=cbp[8], size = .85) +
@@ -33,6 +35,7 @@ ggplot(sidebyside, aes(x=date)) +
   scale_y_log10() +
   theme_minimal()
 
+# Daily COVID-19 Cases in the US with ok coloring
 ggplot(sidebyside[40:95,], aes(x=date)) +
   geom_line(aes(y=daily_cases_usa), color=cbp[1], size = .85) +
   geom_line(aes(y=daily_cases.nony),color=cbp[8], size = .85) +
@@ -43,6 +46,7 @@ ggplot(sidebyside[40:95,], aes(x=date)) +
   scale_y_log10() +
   theme_minimal()
 
+#Daily COVID-19 Cases in the US with legend and ugly coloring
 ggplot(sidebyside[40:95,], aes(x=date)) +
   geom_line(aes(y=daily_cases_usa, color="Nationwide Cases"), size = .85) +
   geom_line(aes(y=daily_cases.nony,color="Cases Outside NYS"), size = .85) +
@@ -51,18 +55,11 @@ ggplot(sidebyside[40:95,], aes(x=date)) +
   geom_line(aes(y=daily_deaths.nony,color="Deaths Outside NYS"), size = .85) +
   geom_line(aes(y=daily_deaths.ny,color="NYS Deaths"), size = .85) +
   scale_colour_manual("", 
-                       breaks = c("Nationwide Cases", "Cases Outside NYS", "NYS Cases","Nationwide Deaths","Deaths Outside NYS","NYS Deaths"),
-                       values = 1:6) +
+                      breaks = c("Nationwide Cases", "Cases Outside NYS", "NYS Cases","Nationwide Deaths","Deaths Outside NYS","NYS Deaths"),
+                      values = 1:6) +
   xlab("Date") +
   ylab("Daily Cases") +
   labs(title = "Daily COVID-19 Cases in the US")+
   scale_y_log10() +
   theme_minimal()
 
-ggplot(us_states, aes(date, cases, color = factor(state))) +
-  geom_point()+
-  theme()
-
-??ggplot2::theme
-
-1:6
