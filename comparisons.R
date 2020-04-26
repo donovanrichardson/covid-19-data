@@ -29,8 +29,7 @@ sidebyside = left_join(us_byday, left_join(nony_byday,onlyny, by="date", suffix 
 View(rollmean(nony_byday$cases,3))
 
 
-cbp <- c("#999999", "#E69F00", "#6BC9FF", "#009E73", "#F0E442", "#372091", "#F52E00", "#C746A4", "#000000")
-pal2= c("#999933","#117733","#666666","#000000", "#88ccee", "#332288")
+cbp <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#F52E00", "#FA96E0", "#000000")
 #abridged version of colorblind palette ^^^
 
 # Log plot of cases in US, NY, and US minus NY
@@ -52,31 +51,27 @@ ggplot(sidebyside[40:95,], aes(x=date)) +
   scale_y_log10() +
   theme_minimal()
 
-#Daily COVID-19 Cases in the US with legend, running 7-day average and deuteranopia colors
+#Daily COVID-19 Cases in the US with legend, running 7-day average and nice coloring
 ggplot(sidebyside[40:95,], aes(x=date)) +
-  geom_point(aes(y=daily_cases_usa, color="Nationwide Cases"), size=.6) +
-  geom_line(aes(y=daily_cases_avg_usa, color="Nationwide Cases"), size=.75) +
-  geom_point(aes(y=daily_cases.nony,color="Cases Outside NYS"), size=.6) +
-  geom_line(aes(y=daily_cases_avg.nony,color="Cases Outside NYS"), size=.75) +
-  geom_point(aes(y=daily_cases.ny,color="NYS Cases"), size=.6) +
-  geom_line(aes(y=daily_cases_avg.ny,color="NYS Cases"), size=.75) +
-  geom_point(aes(y=daily_deaths_usa, color="Nationwide Deaths"), size=.6) +
-  geom_line(aes(y=daily_deaths_avg_usa, color="Nationwide Deaths"), size=.75) +
-  geom_point(aes(y=daily_deaths.nony,color="Deaths Outside NYS"), size=.6) +
-  geom_line(aes(y=daily_deaths_avg.nony,color="Deaths Outside NYS"), size=.75) +
-  geom_point(aes(y=daily_deaths.ny,color="NYS Deaths"), size=.6) +
-  geom_line(aes(y=daily_deaths_avg.ny,color="NYS Deaths"), size=.75) +
+  geom_point(aes(y=daily_cases_usa, color="Nationwide Cases"), size=.5) +
+  geom_line(aes(y=daily_cases_avg_usa, color="Nationwide Cases"), size=.5) +
+  geom_point(aes(y=daily_cases.nony,color="Cases Outside NYS"), size=.5) +
+  geom_line(aes(y=daily_cases_avg.nony,color="Cases Outside NYS"), size=.5) +
+  geom_point(aes(y=daily_cases.ny,color="NYS Cases"), size=.5) +
+  geom_line(aes(y=daily_cases_avg.ny,color="NYS Cases"), size=.5) +
+  geom_point(aes(y=daily_deaths_usa, color="Nationwide Deaths"), size=.5) +
+  geom_line(aes(y=daily_deaths_avg_usa, color="Nationwide Deaths"), size=.5) +
+  geom_point(aes(y=daily_deaths.nony,color="Deaths Outside NYS"), size=.5) +
+  geom_line(aes(y=daily_deaths_avg.nony,color="Deaths Outside NYS"), size=.5) +
+  geom_point(aes(y=daily_deaths.ny,color="NYS Deaths"), size=.5) +
+  geom_line(aes(y=daily_deaths_avg.ny,color="NYS Deaths"), size=.5) +
   scale_colour_manual("", 
                       breaks = c("Nationwide Cases", "Cases Outside NYS", "NYS Cases","Nationwide Deaths","Deaths Outside NYS","NYS Deaths"),
-                      values = pal2) +
+                      values = cbp[c(8,7,1,9,3,6)]) +
   xlab("Date") +
   ylab("Daily Cases") +
-  labs(title = "Daily COVID-19 Cases in the US",
-       caption = "Points are recorded cases and deaths for each day.\nLines are 7-day running averages.") +
+  labs(title = "Daily COVID-19 Cases in the US") +
   scale_y_log10(breaks=c(1,10,100,1000,10000), minor_breaks=c(5,50,500,5000,50000)) +
   annotation_logticks() +
   theme_minimal() +
-  theme(plot.title = element_text(hjust = 0.5),
-        plot.caption = element_text(hjust = 0))
-
-
+  theme(plot.title = element_text(hjust = 0.5))
