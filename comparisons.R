@@ -1,31 +1,36 @@
 library(dplyr)
 library(readr)
+library(zoo)
+library(ggplot2)
 us_states <- read_csv("us-states.csv")
 
 nony = filter(us_states, state!= "New York")
 
 us_byday <- aggregate(cbind(cases_usa=us_states$cases, deaths_usa=us_states$deaths), by=list(date=us_states$date), FUN=sum)%>%
   mutate(daily_cases_usa = cases_usa - lag(cases_usa, default = cases_usa[1])) %>%
-  mutate(daily_deaths_usa = deaths_usa - lag(deaths_usa, default = deaths_usa[1]))
+  mutate(daily_cases_avg_usa = rollmean(daily_cases_usa, 7, fill=NA, align="right")) %>%
+  mutate(daily_deaths_usa = deaths_usa - lag(deaths_usa, default = deaths_usa[1]))%>%
+  mutate(daily_deaths_avg_usa = rollmean(daily_deaths_usa, 7, fill=NA, align="right"))
 
 nony_byday = aggregate(cbind(cases=nony$cases, deaths=nony$deaths), by=list(date=nony$date), FUN=sum)%>%
   mutate(daily_cases = cases - lag(cases, default = cases[1])) %>%
-  mutate(daily_deaths = deaths - lag(deaths, default = deaths[1]))
+  mutate(daily_cases_avg = rollmean(daily_cases, 7, fill=NA, align="right")) %>%
+  mutate(daily_deaths = deaths - lag(deaths, default = deaths[1]))%>%
+  mutate(daily_deaths_avg = rollmean(daily_deaths, 7, fill=NA, align="right"))
 
 onlyny = filter(us_states, state == "New York")[c(1,4,5)]%>%
   mutate(daily_cases = cases - lag(cases, default = cases[1])) %>%
-  mutate(daily_deaths = deaths - lag(deaths, default = deaths[1]))
+  mutate(daily_cases_avg = rollmean(daily_cases, 7, fill=NA, align="right")) %>%
+  mutate(daily_deaths = deaths - lag(deaths, default = deaths[1]))%>%
+  mutate(daily_deaths_avg = rollmean(daily_deaths, 7, fill=NA, align="right"))
 
 sidebyside = left_join(us_byday, left_join(nony_byday,onlyny, by="date", suffix = c(".nony", ".ny")), by="date")
 
-#
-#
+View(rollmean(nony_byday$cases,3))
 
-# Libraries
-library(ggplot2)
 
-cbp <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#000000")
-#abridged version ^^^
+cbp <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#F52E00", "#FA96E0", "#000000")
+#abridged version of colorblind palette ^^^
 
 # Log plot of cases in US, NY, and US minus NY
 ggplot(sidebyside, aes(x=date)) +
@@ -35,7 +40,7 @@ ggplot(sidebyside, aes(x=date)) +
   scale_y_log10() +
   theme_minimal()
 
-# Daily COVID-19 Cases in the US with ok coloring
+# Daily COVID-19 Cases in the US with nice coloring
 ggplot(sidebyside[40:95,], aes(x=date)) +
   geom_line(aes(y=daily_cases_usa), color=cbp[1], size = .85) +
   geom_line(aes(y=daily_cases.nony),color=cbp[8], size = .85) +
@@ -46,17 +51,23 @@ ggplot(sidebyside[40:95,], aes(x=date)) +
   scale_y_log10() +
   theme_minimal()
 
-#Daily COVID-19 Cases in the US with legend and ugly coloring
+#Daily COVID-19 Cases in the US with legend, running 7-day average and nice coloring
 ggplot(sidebyside[40:95,], aes(x=date)) +
-  geom_line(aes(y=daily_cases_usa, color="Nationwide Cases"), size = .85) +
-  geom_line(aes(y=daily_cases.nony,color="Cases Outside NYS"), size = .85) +
-  geom_line(aes(y=daily_cases.ny,color="NYS Cases"), size = .85) +
-  geom_line(aes(y=daily_deaths_usa, color="Nationwide Deaths"), size = .85) +
-  geom_line(aes(y=daily_deaths.nony,color="Deaths Outside NYS"), size = .85) +
-  geom_line(aes(y=daily_deaths.ny,color="NYS Deaths"), size = .85) +
+  geom_point(aes(y=daily_cases_usa, color="Nationwide Cases"), size=.5) +
+  geom_line(aes(y=daily_cases_avg_usa, color="Nationwide Cases"), size=.5) +
+  geom_point(aes(y=daily_cases.nony,color="Cases Outside NYS"), size=.5) +
+  geom_line(aes(y=daily_cases_avg.nony,color="Cases Outside NYS"), size=.5) +
+  geom_point(aes(y=daily_cases.ny,color="NYS Cases"), size=.5) +
+  geom_line(aes(y=daily_cases_avg.ny,color="NYS Cases"), size=.5) +
+  geom_point(aes(y=daily_deaths_usa, color="Nationwide Deaths"), size=.5) +
+  geom_line(aes(y=daily_deaths_avg_usa, color="Nationwide Deaths"), size=.5) +
+  geom_point(aes(y=daily_deaths.nony,color="Deaths Outside NYS"), size=.5) +
+  geom_line(aes(y=daily_deaths_avg.nony,color="Deaths Outside NYS"), size=.5) +
+  geom_point(aes(y=daily_deaths.ny,color="NYS Deaths"), size=.5) +
+  geom_line(aes(y=daily_deaths_avg.ny,color="NYS Deaths"), size=.5) +
   scale_colour_manual("", 
                       breaks = c("Nationwide Cases", "Cases Outside NYS", "NYS Cases","Nationwide Deaths","Deaths Outside NYS","NYS Deaths"),
-                      values = 1:6) +
+                      values = cbp[c(8,7,1,9,3,6)]) +
   xlab("Date") +
   ylab("Daily Cases") +
   labs(title = "Daily COVID-19 Cases in the US") +
@@ -64,5 +75,3 @@ ggplot(sidebyside[40:95,], aes(x=date)) +
   annotation_logticks() +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5))
-  
-
