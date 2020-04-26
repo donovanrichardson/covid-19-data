@@ -59,7 +59,10 @@ ggplot(sidebyside[40:95,], aes(x=date)) +
                       values = 1:6) +
   xlab("Date") +
   ylab("Daily Cases") +
-  labs(title = "Daily COVID-19 Cases in the US")+
-  scale_y_log10() +
-  theme_minimal()
+  labs(title = "Daily COVID-19 Cases in the US") +
+  scale_y_log10(breaks=c(1,10,100,1000,10000), minor_breaks=c(5,50,500,5000,50000)) +
+  annotation_logticks() +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+  
 
