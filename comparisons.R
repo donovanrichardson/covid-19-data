@@ -30,7 +30,7 @@ View(rollmean(nony_byday$cases,3))
 
 
 cbp <- c("#999999", "#E69F00", "#6BC9FF", "#009E73", "#F0E442", "#372091", "#F52E00", "#C746A4", "#000000")
-pal2= c("#999933","#117733","#666666","#000000", "#88ccee", "#332288")
+pal2= c("#88ccee","#332288","#666666","#000000", "#ee7733", "#cc3311")
 #abridged version of colorblind palette ^^^
 
 # Log plot of cases in US, NY, and US minus NY
