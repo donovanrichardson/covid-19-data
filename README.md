@@ -1,3 +1,6 @@
+![Daily COVID-19 Cases in the US (as of April 26)](DailyCases.png)
+
+### *Below is the README as it appears on the* New York Times *COVID-19 GitHub repository*
 # Coronavirus (Covid-19) Data in the United States
 
 [ [U.S. Data](us.csv) ([Raw CSV](https://raw.githubusercontent.com/nytimes/covid-19-data/master/us.csv)) | [U.S. State-Level Data](us-states.csv) ([Raw CSV](https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv)) | [U.S. County-Level Data](us-counties.csv) ([Raw CSV](https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv)) ]

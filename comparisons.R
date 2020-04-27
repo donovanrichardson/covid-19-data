@@ -80,3 +80,5 @@ dailyDotLine<-ggplot(sidebyside[-(1:39),], aes(x=date)) +
         plot.caption = element_text(hjust = 0))
 
 dailyDotLine
+
+ggsave("DailyCases.png", dailyDotLine)
