@@ -34,7 +34,7 @@ pal2= c("#999933","#117733","#666666","#000000", "#88ccee", "#332288")
 #abridged version of colorblind palette ^^^
 
 # Log plot of cases in US, NY, and US minus NY
-ggplot(sidebyside, aes(x=date)) +
+cases <- ggplot(sidebyside, aes(x=date)) +
   geom_line(aes(y=cases_usa), color=cbp[1], size = .85) +
   geom_line(aes(y=cases.nony),color=cbp[8], size = .85) +
   geom_line(aes(y=cases.ny),color=cbp[3], size = .85) +
@@ -42,7 +42,7 @@ ggplot(sidebyside, aes(x=date)) +
   theme_minimal()
 
 # Daily COVID-19 Cases in the US with nice coloring
-ggplot(sidebyside[40:95,], aes(x=date)) +
+dailyLine <- ggplot(sidebyside[-(1:39),], aes(x=date)) +
   geom_line(aes(y=daily_cases_usa), color=cbp[1], size = .85) +
   geom_line(aes(y=daily_cases.nony),color=cbp[8], size = .85) +
   geom_line(aes(y=daily_cases.ny),color=cbp[3], size = .85) +
@@ -53,7 +53,7 @@ ggplot(sidebyside[40:95,], aes(x=date)) +
   theme_minimal()
 
 #Daily COVID-19 Cases in the US with legend, running 7-day average and deuteranopia colors
-ggplot(sidebyside[40:95,], aes(x=date)) +
+dailyDotLine<-ggplot(sidebyside[-(1:39),], aes(x=date)) +
   geom_point(aes(y=daily_cases_usa, color="Nationwide Cases"), size=.6) +
   geom_line(aes(y=daily_cases_avg_usa, color="Nationwide Cases"), size=.75) +
   geom_point(aes(y=daily_cases.nony,color="Cases Outside NYS"), size=.6) +
@@ -79,4 +79,4 @@ ggplot(sidebyside[40:95,], aes(x=date)) +
   theme(plot.title = element_text(hjust = 0.5),
         plot.caption = element_text(hjust = 0))
 
-
+dailyDotLine
