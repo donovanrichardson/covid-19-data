@@ -72,7 +72,7 @@ dailyDotLine<-ggplot(sidebyside[-(1:39),], aes(x=date)) +
   xlab("Date") +
   ylab("Daily Cases") +
   labs(title = "Daily COVID-19 Cases in the US",
-       caption = "Points are recorded cases and deaths for each day.\nLines are 7-day running averages.") +
+       caption = "Points are recorded cases and deaths for each day.\nLines are 7-day running averages.\nGraph by Donovan Richardson\nData from The New York Times, based on reports from state and local health agencies.") +
   scale_y_log10(breaks=c(1,10,100,1000,10000), minor_breaks=c(5,50,500,5000,50000)) +
   annotation_logticks() +
   theme_minimal() +
@@ -81,4 +81,5 @@ dailyDotLine<-ggplot(sidebyside[-(1:39),], aes(x=date)) +
 
 dailyDotLine
 
+# creates the DailyCases.png file shown in the README.md
 ggsave("DailyCases.png", dailyDotLine)
