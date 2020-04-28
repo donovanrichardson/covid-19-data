@@ -26,19 +26,20 @@ onlyny = filter(us_states, state == "New York")[c(1,4,5)]%>%
 
 sidebyside = left_join(us_byday, left_join(nony_byday,onlyny, by="date", suffix = c(".nony", ".ny")), by="date")
 
-View(rollmean(nony_byday$cases,3))
-
-
 cbp <- c("#999999", "#E69F00", "#6BC9FF", "#009E73", "#F0E442", "#372091", "#F52E00", "#C746A4", "#000000")
 pal2= c("#88ccee","#0077bb","#666666","#000000", "#ee7733", "#cc3311")
 #abridged version of colorblind palette ^^^
 
 # Log plot of cases in US, NY, and US minus NY
 cases <- ggplot(sidebyside, aes(x=date)) +
-  geom_line(aes(y=cases_usa), color=cbp[1], size = .85) +
-  geom_line(aes(y=cases.nony),color=cbp[8], size = .85) +
-  geom_line(aes(y=cases.ny),color=cbp[3], size = .85) +
-  scale_y_log10() +
+  geom_line(aes(y=cases_usa, color = "Nationwide Cases"), size = .85) +
+  geom_line(aes(y=cases.nony, color = "Cases Outside NYS"), size = .85) +
+  geom_line(aes(y=cases.ny, color = "NYS Cases"), size = .85) +
+  scale_y_log10(breaks=c(1,10,100,1000,10000,100000,1000000), minor_breaks=c(5,50,500,5000,50000,500000)) +
+  annotation_logticks() +
+  scale_colour_manual("", 
+                      breaks = c("Nationwide Cases", "Cases Outside NYS", "NYS Cases"),
+                      values = c(cbp[8],cbp[1],cbp[3])) +
   theme_minimal()
 
 # Daily COVID-19 Cases in the US with nice coloring
@@ -71,7 +72,7 @@ dailyDotLine<-ggplot(sidebyside[-(1:39),], aes(x=date)) +
                       values = pal2) +
   xlab("Date") +
   ylab("Daily Cases") +
-  labs(title = "Daily COVID-19 Cases in the US",
+  labs(title = "Daily COVID-19 Cases in the US (to April 27)",
        caption = "Points are recorded cases and deaths for each day.\nLines are 7-day running averages.\nGraph by Donovan Richardson\nData from The New York Times, based on reports from state and local health agencies.") +
   scale_y_log10(breaks=c(1,10,100,1000,10000), minor_breaks=c(5,50,500,5000,50000)) +
   annotation_logticks() +
