@@ -72,7 +72,7 @@ dailyDotLine<-ggplot(sidebyside[-(1:39),], aes(x=date)) +
                       values = pal2) +
   xlab("Date") +
   ylab("Daily Cases") +
-  labs(title = "Daily COVID-19 Cases in the US (to April 29)",
+  labs(title = "Daily COVID-19 Cases in the US (to April 30)",
        caption = "Points are recorded cases and deaths for each day.\nLines are 7-day running averages.\nGraph by Donovan Richardson\nData from The New York Times, based on reports from state and local health agencies.") +
   scale_y_log10(breaks=c(1,10,100,1000,10000), minor_breaks=c(5,50,500,5000,50000)) +
   annotation_logticks() +
