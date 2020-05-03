@@ -1,4 +1,4 @@
-![Daily COVID-19 Cases in the US (as of April 26)](DailyCases.png)
+![Daily COVID-19 Cases in the US](DailyCases.png)
 
 ### *Below is the README as it appears on the* New York Times *COVID-19 GitHub repository*
 # Coronavirus (Covid-19) Data in the United States

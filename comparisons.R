@@ -13,18 +13,24 @@ us_byday <- aggregate(cbind(cases_usa=us_states$cases, deaths_usa=us_states$deat
   mutate(daily_deaths_avg_usa = rollmean(daily_deaths_usa, 7, fill=NA, align="right"))
 
 nony_byday = aggregate(cbind(cases=nony$cases, deaths=nony$deaths), by=list(date=nony$date), FUN=sum)%>%
-  mutate(daily_cases = cases - lag(cases, default = cases[1])) %>%
-  mutate(daily_cases_avg = rollmean(daily_cases, 7, fill=NA, align="right")) %>%
-  mutate(daily_deaths = deaths - lag(deaths, default = deaths[1]))%>%
-  mutate(daily_deaths_avg = rollmean(daily_deaths, 7, fill=NA, align="right"))
+  mutate(daily_cases.nony = cases - lag(cases, default = cases[1])) %>%
+  mutate(daily_cases_avg.nony = rollmean(daily_cases.nony, 7, fill=NA, align="right")) %>%
+  mutate(daily_deaths.nony = deaths - lag(deaths, default = deaths[1]))%>%
+  mutate(daily_deaths_avg.nony = rollmean(daily_deaths.nony, 7, fill=NA, align="right"))
 
 onlyny = filter(us_states, state == "New York")[c(1,4,5)]%>%
-  mutate(daily_cases = cases - lag(cases, default = cases[1])) %>%
-  mutate(daily_cases_avg = rollmean(daily_cases, 7, fill=NA, align="right")) %>%
-  mutate(daily_deaths = deaths - lag(deaths, default = deaths[1]))%>%
-  mutate(daily_deaths_avg = rollmean(daily_deaths, 7, fill=NA, align="right"))
+  mutate(daily_cases.ny = cases - lag(cases, default = cases[1])) %>%
+  mutate(daily_cases_avg.ny = rollmean(daily_cases.ny, 7, fill=NA, align="right")) %>%
+  mutate(daily_deaths.ny = deaths - lag(deaths, default = deaths[1]))%>%
+  mutate(daily_deaths_avg.ny = rollmean(daily_deaths.ny, 7, fill=NA, align="right"))
 
-sidebyside = left_join(us_byday, left_join(nony_byday,onlyny, by="date", suffix = c(".nony", ".ny")), by="date")
+onlynj = filter(us_states, state == "New Jersey")[c(1,4,5)]%>%
+  mutate(daily_cases.nj = cases - lag(cases, default = cases[1])) %>%
+  mutate(daily_cases_avg.nj = rollmean(daily_cases.nj, 7, fill=NA, align="right")) %>%
+  mutate(daily_deaths.nj = deaths - lag(deaths, default = deaths[1]))%>%
+  mutate(daily_deaths_avg.nj = rollmean(daily_deaths.nj, 7, fill=NA, align="right"))
+
+sidebyside = left_join(us_byday, left_join(nony_byday,left_join(onlyny, onlynj, by='date'), by="date"), by="date")
 
 cbp <- c("#999999", "#E69F00", "#6BC9FF", "#009E73", "#F0E442", "#372091", "#F52E00", "#C746A4", "#000000")
 pal2= c("#88ccee","#0077bb","#666666","#000000", "#ee7733", "#cc3311")
@@ -72,7 +78,7 @@ dailyDotLine<-ggplot(sidebyside[-(1:39),], aes(x=date)) +
                       values = pal2) +
   xlab("Date") +
   ylab("Daily Cases") +
-  labs(title = "Daily COVID-19 Cases in the US (to April 30)",
+  labs(title = "Daily COVID-19 Cases and Deaths in the US (to May 1)",
        caption = "Points are recorded cases and deaths for each day.\nLines are 7-day running averages.\nGraph by Donovan Richardson\nData from The New York Times, based on reports from state and local health agencies.") +
   scale_y_log10(breaks=c(1,10,100,1000,10000), minor_breaks=c(5,50,500,5000,50000)) +
   annotation_logticks() +
@@ -82,5 +88,44 @@ dailyDotLine<-ggplot(sidebyside[-(1:39),], aes(x=date)) +
 
 dailyDotLine
 
+dailyNyNj<-ggplot(sidebyside[-(1:39),], aes(x=date)) +
+  geom_point(aes(y=daily_cases_usa, color="Nationwide Cases"), size=.6) +
+  geom_line(aes(y=daily_cases_avg_usa, color="Nationwide Cases"), size=.75) +
+  geom_point(aes(y=daily_cases.nony,color="Cases Outside NYS"), size=.6) +
+  geom_line(aes(y=daily_cases_avg.nony,color="Cases Outside NYS"), size=.75) +
+  geom_point(aes(y=daily_cases.ny,color="NYS Cases"), size=.6) +
+  geom_line(aes(y=daily_cases_avg.ny,color="NYS Cases"), size=.75) +
+  geom_point(aes(y=daily_deaths_usa, color="Nationwide Deaths"), size=.6) +
+  geom_line(aes(y=daily_deaths_avg_usa, color="Nationwide Deaths"), size=.75) +
+  geom_point(aes(y=daily_deaths.nony,color="Deaths Outside NYS"), size=.6) +
+  geom_line(aes(y=daily_deaths_avg.nony,color="Deaths Outside NYS"), size=.75) +
+  geom_point(aes(y=daily_deaths.ny,color="NYS Deaths"), size=.6) +
+  geom_line(aes(y=daily_deaths_avg.ny,color="NYS Deaths"), size=.75) +
+  scale_colour_manual("", 
+                      breaks = c("Nationwide Cases", "Cases Outside NYS", "NYS Cases","Nationwide Deaths","Deaths Outside NYS","NYS Deaths"),
+                      values = pal2) +
+  xlab("Date") +
+  ylab("Daily Cases") +
+  labs(title = "Daily COVID-19 Cases and Deaths in the US (to May 1)",
+       caption = "Points are recorded cases and deaths for each day.\nLines are 7-day running averages.\nGraph by Donovan Richardson\nData from The New York Times, based on reports from state and local health agencies.") +
+  scale_y_log10(breaks=c(1,10,100,1000,10000), minor_breaks=c(5,50,500,5000,50000)) +
+  annotation_logticks() +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.caption = element_text(hjust = 0))
+
 # creates the DailyCases.png file shown in the README.md
 ggsave("DailyCases.png", dailyDotLine)
+
+# ggplot(us_counties[us_counties$state=="New York",], aes(x=date, y= deaths)) +
+#   geom_line(aes(color=county), size = .85) +
+#   # geom_line(aes(y=daily_cases.nony),color=cbp[8], size = .85) +
+#   # geom_line(aes(y=daily_cases.ny),color=cbp[3], size = .85) +
+#   # geom_line(aes(y=daily_deaths_usa), color=cbp[9], size = .85) +
+#   # geom_line(aes(y=daily_deaths.nony),color=cbp[7], size = .85) +
+#   # geom_line(aes(y=daily_deaths.ny),color=cbp[6], size = .85) +
+#   scale_y_log10() +
+#   theme_minimal()
+# 
+# ny_counties <- us_counties[us_counties$state == "New York",]
+# countsum <- aggregate(cbind(cases_ny=ny_counties$cases, deaths_ny=ny_counties$deaths), by=list(date=ny_counties$date), FUN=sum)
