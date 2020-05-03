@@ -33,8 +33,13 @@ onlynj = filter(us_states, state == "New Jersey")[c(1,4,5)]%>%
 sidebyside = left_join(us_byday, left_join(nony_byday,left_join(onlyny, onlynj, by='date'), by="date"), by="date")
 
 cbp <- c("#999999", "#E69F00", "#6BC9FF", "#009E73", "#F0E442", "#372091", "#F52E00", "#C746A4", "#000000")
+
+
 pal2= c("#88ccee","#0077bb","#666666","#000000", "#ee7733", "#cc3311")
-#abridged version of colorblind palette ^^^
+#abridged version of colorblind palette ^^^#c nony, d nony, us cas, us dea, nycas, nydea
+
+pal3= c("#0077bb","#000000", "#ee7733", "#cc3311")
+#d nony, us dea, njdea, nydea
 
 # Log plot of cases in US, NY, and US minus NY
 cases <- ggplot(sidebyside, aes(x=date)) +
@@ -78,8 +83,8 @@ dailyDotLine<-ggplot(sidebyside[-(1:39),], aes(x=date)) +
                       values = pal2) +
   xlab("Date") +
   ylab("Daily Cases") +
-  labs(title = "Daily COVID-19 Cases and Deaths in the US (to May 1)",
-       caption = "Points are recorded cases and deaths for each day.\nLines are 7-day running averages.\nGraph by Donovan Richardson\nData from The New York Times, based on reports from state and local health agencies.") +
+  labs(title = "Daily COVID-19 Cases and Deaths in the US (to May 2)",
+       caption = "Points are cases and deaths reported each day.\nLines are 7-day running averages.\nGraph by Donovan Richardson\nData from The New York Times, based on reports from state and local health agencies.") +
   scale_y_log10(breaks=c(1,10,100,1000,10000), minor_breaks=c(5,50,500,5000,50000)) +
   annotation_logticks() +
   theme_minimal() +
@@ -88,44 +93,32 @@ dailyDotLine<-ggplot(sidebyside[-(1:39),], aes(x=date)) +
 
 dailyDotLine
 
-dailyNyNj<-ggplot(sidebyside[-(1:39),], aes(x=date)) +
-  geom_point(aes(y=daily_cases_usa, color="Nationwide Cases"), size=.6) +
-  geom_line(aes(y=daily_cases_avg_usa, color="Nationwide Cases"), size=.75) +
-  geom_point(aes(y=daily_cases.nony,color="Cases Outside NYS"), size=.6) +
-  geom_line(aes(y=daily_cases_avg.nony,color="Cases Outside NYS"), size=.75) +
-  geom_point(aes(y=daily_cases.ny,color="NYS Cases"), size=.6) +
-  geom_line(aes(y=daily_cases_avg.ny,color="NYS Cases"), size=.75) +
+dailyNyNj<-ggplot(sidebyside[-(1:55),], aes(x=date)) +
   geom_point(aes(y=daily_deaths_usa, color="Nationwide Deaths"), size=.6) +
   geom_line(aes(y=daily_deaths_avg_usa, color="Nationwide Deaths"), size=.75) +
   geom_point(aes(y=daily_deaths.nony,color="Deaths Outside NYS"), size=.6) +
   geom_line(aes(y=daily_deaths_avg.nony,color="Deaths Outside NYS"), size=.75) +
   geom_point(aes(y=daily_deaths.ny,color="NYS Deaths"), size=.6) +
   geom_line(aes(y=daily_deaths_avg.ny,color="NYS Deaths"), size=.75) +
+  
+  geom_point(aes(y=daily_deaths.nj,color="New Jersey Deaths"), size=.6) +
+  geom_line(aes(y=daily_deaths_avg.nj,color="New Jersey Deaths"), size=.75) +
   scale_colour_manual("", 
-                      breaks = c("Nationwide Cases", "Cases Outside NYS", "NYS Cases","Nationwide Deaths","Deaths Outside NYS","NYS Deaths"),
-                      values = pal2) +
+                      breaks = c("Nationwide Deaths","Deaths Outside NYS","NYS Deaths", "New Jersey Deaths"),
+                      values = pal3) +
   xlab("Date") +
   ylab("Daily Cases") +
-  labs(title = "Daily COVID-19 Cases and Deaths in the US (to May 1)",
-       caption = "Points are recorded cases and deaths for each day.\nLines are 7-day running averages.\nGraph by Donovan Richardson\nData from The New York Times, based on reports from state and local health agencies.") +
-  scale_y_log10(breaks=c(1,10,100,1000,10000), minor_breaks=c(5,50,500,5000,50000)) +
-  annotation_logticks() +
+  labs(title = "Daily COVID-19 Deaths in Selected States (to May 2)",
+       caption = "Points are deaths reported each day.\nLines are 7-day running averages.\nGraph by Donovan Richardson\nData from The New York Times, based on reports from state and local health agencies.") +
+  # scale_y_log10(breaks=c(1,10,100,1000), minor_breaks=c(5,50,500,5000)) +
+  # annotation_logticks() +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5),
         plot.caption = element_text(hjust = 0))
 
 # creates the DailyCases.png file shown in the README.md
-ggsave("DailyCases.png", dailyDotLine)
 
-# ggplot(us_counties[us_counties$state=="New York",], aes(x=date, y= deaths)) +
-#   geom_line(aes(color=county), size = .85) +
-#   # geom_line(aes(y=daily_cases.nony),color=cbp[8], size = .85) +
-#   # geom_line(aes(y=daily_cases.ny),color=cbp[3], size = .85) +
-#   # geom_line(aes(y=daily_deaths_usa), color=cbp[9], size = .85) +
-#   # geom_line(aes(y=daily_deaths.nony),color=cbp[7], size = .85) +
-#   # geom_line(aes(y=daily_deaths.ny),color=cbp[6], size = .85) +
-#   scale_y_log10() +
-#   theme_minimal()
-# 
-# ny_counties <- us_counties[us_counties$state == "New York",]
-# countsum <- aggregate(cbind(cases_ny=ny_counties$cases, deaths_ny=ny_counties$deaths), by=list(date=ny_counties$date), FUN=sum)
+dailyNyNj
+
+ggsave("DailyCases.png", dailyDotLine)
+ggsave("DailyNY-NJ.png", dailyNyNj)
