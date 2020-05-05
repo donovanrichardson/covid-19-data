@@ -83,7 +83,7 @@ dailyDotLine<-ggplot(sidebyside[-(1:39),], aes(x=date)) +
                       values = pal2) +
   xlab("Date") +
   ylab("Daily Cases") +
-  labs(title = "Daily COVID-19 Cases and Deaths in the US (to May 2)",
+  labs(title = "Daily COVID-19 Cases and Deaths in the US (to May 4)",
        caption = "Points are cases and deaths reported each day.\nLines are 7-day running averages.\nGraph by Donovan Richardson\nData from The New York Times, based on reports from state and local health agencies.") +
   scale_y_log10(breaks=c(1,10,100,1000,10000), minor_breaks=c(5,50,500,5000,50000)) +
   annotation_logticks() +
@@ -96,19 +96,19 @@ dailyDotLine
 dailyNyNj<-ggplot(sidebyside[-(1:55),], aes(x=date)) +
   geom_point(aes(y=daily_deaths_usa, color="Nationwide Deaths"), size=.6) +
   geom_line(aes(y=daily_deaths_avg_usa, color="Nationwide Deaths"), size=.75) +
-  geom_point(aes(y=daily_deaths.nony,color="Deaths Outside NYS"), size=.6) +
-  geom_line(aes(y=daily_deaths_avg.nony,color="Deaths Outside NYS"), size=.75) +
+  geom_point(aes(y=daily_deaths.nony,color="Deaths Outside NY&NJ"), size=.6) +
+  geom_line(aes(y=daily_deaths_avg.nony,color="Deaths Outside NY&NJ"), size=.75) +
   geom_point(aes(y=daily_deaths.ny,color="NYS Deaths"), size=.6) +
   geom_line(aes(y=daily_deaths_avg.ny,color="NYS Deaths"), size=.75) +
   
   geom_point(aes(y=daily_deaths.nj,color="New Jersey Deaths"), size=.6) +
   geom_line(aes(y=daily_deaths_avg.nj,color="New Jersey Deaths"), size=.75) +
   scale_colour_manual("", 
-                      breaks = c("Nationwide Deaths","Deaths Outside NYS","NYS Deaths", "New Jersey Deaths"),
+                      breaks = c("Nationwide Deaths","Deaths Outside NY&NJ","NYS Deaths", "New Jersey Deaths"),
                       values = pal3) +
   xlab("Date") +
   ylab("Daily Cases") +
-  labs(title = "Daily COVID-19 Deaths in Selected States (to May 2)",
+  labs(title = "Daily COVID-19 Deaths in Selected States (to May 4)",
        caption = "Points are deaths reported each day.\nLines are 7-day running averages.\nGraph by Donovan Richardson\nData from The New York Times, based on reports from state and local health agencies.") +
   # scale_y_log10(breaks=c(1,10,100,1000), minor_breaks=c(5,50,500,5000)) +
   # annotation_logticks() +
