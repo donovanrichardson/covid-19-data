@@ -1,4 +1,4 @@
-![Daily COVID-19 Cases in the US](DailyCases.png)
+<!-- ![Daily COVID-19 Cases in the US](DailyCases.png) -->
 ![Daily COVID-19 Cases in Selected States](DailyNY-NJ.png)
 
 ### *Below is the README as it appears on the* New York Times *COVID-19 GitHub repository*
