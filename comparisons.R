@@ -37,6 +37,12 @@ onlynj = filter(us_states, state == "New Jersey")[c(1,4,5)]%>%
   mutate(daily_deaths.nj = deaths - lag(deaths, default = deaths[1]))%>%
   mutate(daily_deaths_avg.nj = rollmean(daily_deaths.nj, 7, fill=NA, align="right"))
 
+onlyma = filter(us_states, state == "Massachusetts")[c(1,4,5)]%>%
+  mutate(daily_cases.ma = cases - lag(cases, default = cases[1])) %>%
+  mutate(daily_cases_avg.ma = rollmean(daily_cases.ma, 7, fill=NA, align="right")) %>%
+  mutate(daily_deaths.ma = deaths - lag(deaths, default = deaths[1]))%>%
+  mutate(daily_deaths_avg.ma = rollmean(daily_deaths.ma, 7, fill=NA, align="right"))
+
 sidebyside = left_join(us_byday, left_join(nony_byday,left_join(onlyny, onlynj, by='date'), by="date"), by="date")
 
 sidebyside2 = left_join(us_byday, left_join(nonynj_byday,left_join(onlyny, onlynj, by='date'), by="date"), by="date")
@@ -92,7 +98,7 @@ dailyDotLine<-ggplot(sidebyside[-(1:39),], aes(x=date)) +
                       values = pal2) +
   xlab("Date") +
   ylab("Daily Cases") +
-  labs(title = "Daily COVID-19 Cases and Deaths in the US (to May 11)",
+  labs(title = "Daily COVID-19 Cases and Deaths in the US (to May 13)",
        caption = "Points are cases and deaths reported each day.\nLines are 7-day running averages.\nGraph by Donovan Richardson\nData from The New York Times, based on reports from state and local health agencies.") +
   scale_y_log10(breaks=c(1,10,100,1000,10000), minor_breaks=c(5,50,500,5000,50000)) +
   annotation_logticks() +
@@ -117,7 +123,7 @@ dailyNyNj<-ggplot(sidebyside2[-(1:55),], aes(x=date)) +
                       values = pal3) +
   xlab("Date") +
   ylab("Daily Cases") +
-  labs(title = "Daily COVID-19 Deaths in Selected States (to May 11)",
+  labs(title = "Daily COVID-19 Deaths in Selected States (to May 13)",
        caption = "Points are deaths reported each day.\nLines are 7-day running averages.\nGraph by Donovan Richardson\nData from The New York Times, based on reports from state and local health agencies.") +
   # scale_y_log10(breaks=c(1,10,100,1000), minor_breaks=c(5,50,500,5000)) +
   # annotation_logticks() +
