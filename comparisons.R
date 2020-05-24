@@ -100,7 +100,7 @@ dailyDotLine<-ggplot(sidebyside[-(1:39),], aes(x=date)) +
                       values = pal2) +
   xlab("Date") +
   ylab("Daily Cases") +
-  labs(title = "Daily COVID-19 Cases and Deaths in the US (to May 22)",
+  labs(title = "Daily COVID-19 Cases and Deaths in the US (to May 23)",
        caption = "Points are cases and deaths reported each day.\nLines are 7-day running averages.\nGraph by Donovan Richardson\nData from The New York Times, based on reports from state and local health agencies.") +
   scale_y_log10(breaks=c(1,10,100,1000,10000), minor_breaks=c(5,50,500,5000,50000)) +
   annotation_logticks() +
@@ -125,7 +125,7 @@ dailyNyNj<-ggplot(sidebyside2[-(1:55),], aes(x=date)) +
                       values = pal3) +
   xlab("Date") +
   ylab("Daily Cases") +
-  labs(title = "Daily COVID-19 Deaths in Selected States (to May 22)",
+  labs(title = "Daily COVID-19 Deaths in Selected States (to May 23)",
        caption = "Points are deaths reported each day.\nLines are 7-day running averages.\nGraph by Donovan Richardson\nData from The New York Times, based on reports from state and local health agencies.") +
   # scale_y_log10(breaks=c(1,10,100,1000), minor_breaks=c(5,50,500,5000)) +
   # annotation_logticks() +
