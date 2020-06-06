@@ -1,8 +1,3 @@
-<object data="DailyCases.pdf" type="application/pdf" width="700px" height="700px">
-    <embed src="DailyCases.pdf">
-        <p>This browser does not support PDFs. Please download the PDF to view it: <a href="DailyCases.pdf">Download PDF</a>.</p>
-    </embed>
-</object>
 <!-- ![Daily COVID-19 Cases in the US](DailyCases.png) -->
 ![Daily COVID-19 Cases in Selected States](DailyNY-NJ.png)
 
