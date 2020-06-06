@@ -1,3 +1,4 @@
+This repository is now hosted at [GitHub](https://github.com/donovanrichardson/covid-19-data)
 <!-- ![Daily COVID-19 Cases in the US](DailyCases.png) -->
 ![Daily COVID-19 Cases in Selected States](DailyNY-NJ.png)
 
