@@ -5,10 +5,18 @@ library(readr)
 library(zoo)
 library(ggplot2)
 
+library(sqldf)
+
+# View(sqldf('select distinct state, fips from us_states'))
+us_states <- read_csv("us-states.csv")
+us_states$fips <- as.numeric(us_states$fips) #technically this is incorrect, but I did not want to put quotes and zeroes in front of all the single digit numbers
+
 toDate <- "(to June 7)"
 
 nony = filter(us_states, !(state %in% c("New York")))
-us_states <- read_csv("us-states.csv")
+
+
+
 nonynj = filter(us_states, !(state %in% c("New York", "New Jersey")))
 
 us_byday <- aggregate(cbind(cases_usa=us_states$cases, deaths_usa=us_states$deaths), by=list(date=us_states$date), FUN=sum)%>%
@@ -16,6 +24,8 @@ us_byday <- aggregate(cbind(cases_usa=us_states$cases, deaths_usa=us_states$deat
   mutate(daily_cases_avg_usa = rollmean(daily_cases_usa, 7, fill=NA, align="right")) %>%
   mutate(daily_deaths_usa = deaths_usa - lag(deaths_usa, default = deaths_usa[1]))%>%
   mutate(daily_deaths_avg_usa = rollmean(daily_deaths_usa, 7, fill=NA, align="right"))
+
+
 
 nony_byday = aggregate(cbind(cases=nony$cases, deaths=nony$deaths), by=list(date=nony$date), FUN=sum)%>%
   mutate(daily_cases.nony = cases - lag(cases, default = cases[1])) %>%
@@ -104,6 +114,7 @@ dailyDotLine<-ggplot(sidebyside[-(1:39),], aes(x=date)) +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5),
         plot.caption = element_text(hjust = 0))
+by_region
 dailyDotLine
 
 dailyNyNj<-ggplot(sidebyside2[-(1:55),], aes(x=date)) +
@@ -121,7 +132,7 @@ dailyNyNj<-ggplot(sidebyside2[-(1:55),], aes(x=date)) +
                       values = pal3) +
   xlab("Date") +
   ylab("Daily Cases") +
-  labs(title = paste("Daily COVID-19 Deaths in Selected States", toDate),
+  labs(title = paste("Daily COVID-19 Cases and Deaths in the US", toDate),
        caption = "Points are deaths reported each day.\nLines are 7-day running averages.\nGraph by Donovan Richardson\nData from The New York Times, based on reports from state and local health agencies.") +
   # scale_y_log10(breaks=c(1,10,100,1000), minor_breaks=c(5,50,500,5000)) +
   # annotation_logticks() +
@@ -135,7 +146,7 @@ dailyNyNj
 
 ggsave("DailyCases.png", dailyDotLine)
 ggsave("DailyNY-NJ.png", dailyNyNj)
-
+ggsave("deaths_regional.pdf",by_region)
 
 # ggsave("DailyCases.pdf", dailyDotLine)
 # ggsave("DailyNY-NJ.pdf", dailyNyNj)

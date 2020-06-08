@@ -8,7 +8,7 @@ library(ggplot2)
 us_states <- read_csv("us-states.csv")
 us_states$fips <- as.numeric(us_states$fips) #technically this is incorrect, but I did not want to put quotes and zeroes in front of all the single digit numbers
 
-
+# I should fix the legend
 
 # ggplot() +
 #   geom_line(data=south, aes(x=date, y=daily_deaths_avg, color="South")) +
@@ -133,18 +133,18 @@ cap_form <- paste0(c(
   strwrap("South: Maryland, Delaware, DC, Virginia, West Virginia, North Carolina, South Carolina, Georgia, Florida, Kentucky, Tennessee, Alabama, Mississippi, Louisiana, Arkansas, Oklahoma, Texas", 85)), sep="", collapse="\n")
 
 by_region<-ggplot() +
-  geom_line(data=south, aes(x=date, y=daily_deaths_avg, color="South")) +
-  geom_line(data=mw, aes(x=date, y=daily_deaths_avg, color="Midwest")) +
+  geom_line(data=south[!south$date<as.Date('2020-02-29'),], aes(x=date, y=daily_deaths_avg, color="South")) +
+  geom_line(data=mw[!mw$date<as.Date('2020-02-29'),], aes(x=date, y=daily_deaths_avg, color="Midwest")) +
   # geom_line(data=mwe, aes(x=date, y=daily_deaths_avg, color="Midwest(East)")) +
   # geom_line(data=mww, aes(x=date, y=daily_deaths_avg, color="Midwest(Plains)")) +
   # geom_line(data=ny, aes(x=date, y=daily_deaths_avg, color="New York")) +
   # geom_line(data=nj, aes(x=date, y=daily_deaths_avg, color="New Jersey")) +
-  geom_line(data=northeast, aes(x=date, y=daily_deaths_avg, color="Northeast")) +
-  geom_line(data=mtnsw, aes(x=date, y=daily_deaths_avg, color="Mountain+SW")) +
+  geom_line(data=northeast[!northeast$date<as.Date('2020-02-29'),], aes(x=date, y=daily_deaths_avg, color="Northeast")) +
+  geom_line(data=mtnsw[!mtnsw$date<as.Date('2020-02-29'),], aes(x=date, y=daily_deaths_avg, color="Mountain+SW")) +
   # geom_line(data=aznm, aes(x=date, y=daily_deaths_avg, color="AZ+NM")) +
-  geom_line(data=cali, linetype='solid', aes(x=date, y=daily_deaths_avg, color="California")) +
-  geom_line(data=pnw, aes(x=date, y=daily_deaths_avg, color="Pacific NW")) +
-  geom_line(data=akhi, aes(x=date, y=daily_deaths_avg, color="AK+HI")) +
+  geom_line(data=cali[!cali$date<as.Date('2020-02-29'),], linetype='solid', aes(x=date, y=daily_deaths_avg, color="California")) +
+  geom_line(data=pnw[!pnw$date<as.Date('2020-02-29'),], aes(x=date, y=daily_deaths_avg, color="Pacific NW")) +
+  geom_line(data=akhi[!akhi$date<as.Date('2020-02-29'),], aes(x=date, y=daily_deaths_avg, color="AK+HI")) +
   # geom_line(data=penn, linetype='dashed', aes(x=date, y=daily_deaths_avg, color="Pennsylvania")) +
   # geom_line(data=new, aes(x=date, y=daily_deaths_avg, color="New England")) + 
   # scale_colour_manual("",breaks=c("South","Midwest","Midwest(East)","Midwest(Plains)","New York","New Jersey","NY+NJ","Northeast","Mountain","Mountain+SW", "AZ+NM", "California", "Pacific NW", "AK+HI", "Pennsylvania", "New England"), values= cbp4)+
