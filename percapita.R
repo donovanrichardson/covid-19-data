@@ -4,9 +4,7 @@ library(readr)
 library(zoo) #for rollmean
 library(ggplot2)
 
-refdate <- Sys.Date() -2
-
-
+refdate <- Sys.Date() -1
 
 # Cases and deaths by state
 us_states <- read_csv("us-states.csv")
@@ -85,8 +83,8 @@ write.csv(covid_daily_norm, "state_trends/covid_normalized.csv")
 
 covid_daily_norm$date <- as.character(covid_daily_norm$date)
 
-ranking <- sqldf(sprintf("select state, daily_cases_avg_per, daily_deaths_avg_per from covid_daily_norm where date = '%s'", refdate))
-ranking$weekly_deaths_perhunthou <- ranking$daily_deaths_avg_per*7 * 100000
-ranking$weekly_cases_perhunthou <- ranking$daily_cases_avg_per*7 * 100000
+ranking <- sqldf(sprintf("select date, state, daily_cases_avg_per, daily_deaths_avg_per, weekly_cases_per100k, weekly_deaths_per100k from covid_daily_norm where date = '%s'", refdate))
+
+View(ranking)
 
 # View(sqldf('pragma table_info(states)'))

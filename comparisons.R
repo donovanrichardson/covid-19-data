@@ -11,7 +11,8 @@ library(sqldf)
 us_states <- read_csv("us-states.csv")
 us_states$fips <- as.numeric(us_states$fips) #technically this is incorrect, but I did not want to put quotes and zeroes in front of all the single digit numbers
 
-toDate <- "(to June 7)"
+refdate <- Sys.Date() -1
+toDate <- sprintf("(to %s)", sub('  ', ' ', format(refdate, "%B %e")))
 
 nony = filter(us_states, !(state %in% c("New York")))
 
@@ -114,7 +115,7 @@ dailyDotLine<-ggplot(sidebyside[-(1:39),], aes(x=date)) +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5),
         plot.caption = element_text(hjust = 0))
-by_region
+
 dailyDotLine
 
 dailyNyNj<-ggplot(sidebyside2[-(1:55),], aes(x=date)) +
