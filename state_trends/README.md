@@ -7,7 +7,7 @@ The [covid_normalized.csv](covid_normalized.csv) file in this directory was gene
 
 **fips:** The FIPS code for the state, or `0` for the `USA`. Leading zeros got cut off, I'll fix that later.
 
-**date:** The date for of the timeseries.
+**date:** The date of the timeseries.
 
 **cases:** Total number of confirmed or suspected COVID-19 cases on given date
 
@@ -16,6 +16,7 @@ The [covid_normalized.csv](covid_normalized.csv) file in this directory was gene
 **daily_cases:** Increase in number of cases in the state from the day before
 
 **daily_cases_avg:** Seven day running average of `daily_cases`
+
 **daily_deaths:** Increase in number of deaths in the state from the day before
 
 **daily_deaths_avg:** Seven day running average of `daily_deaths`
