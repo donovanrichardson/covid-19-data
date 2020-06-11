@@ -162,3 +162,4 @@ by_region<-ggplot() +
 by_region
 
 ggsave("deaths_regional.pdf",by_region)
+ggsave("deaths_regional.svg",by_region)

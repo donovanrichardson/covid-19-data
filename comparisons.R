@@ -1,9 +1,12 @@
 # install.packages("zoo")
+# install.packages("svglite")
+# install.packages("systemfonts")
 
 library(dplyr)
 library(readr)
 library(zoo)
 library(ggplot2)
+
 
 library(sqldf)
 
@@ -146,8 +149,12 @@ dailyNyNj<-ggplot(sidebyside2[-(1:55),], aes(x=date)) +
 dailyNyNj
 
 ggsave("DailyCases.png", dailyDotLine)
+
+ggsave("DailyCases.svg", dailyDotLine)
+
 ggsave("DailyNY-NJ.png", dailyNyNj)
-ggsave("deaths_regional.pdf",by_region)
+
+ggsave("DailyNY-NJ.svg", dailyNyNj)
 
 # ggsave("DailyCases.pdf", dailyDotLine)
 # ggsave("DailyNY-NJ.pdf", dailyNyNj)

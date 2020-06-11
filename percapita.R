@@ -85,6 +85,42 @@ covid_daily_norm$date <- as.character(covid_daily_norm$date)
 
 ranking <- sqldf(sprintf("select date, state, daily_cases_avg_per, daily_deaths_avg_per, weekly_cases_per100k, weekly_deaths_per100k from covid_daily_norm where date = '%s'", refdate))
 
-View(ranking)
+# View(ranking)
+View(sqldf("select state, weekly_cases_per100k, weekly_deaths_per100k from ranking"))
 
 # View(sqldf('pragma table_info(states)'))
+
+covid_daily_norm$date <- as.Date(covid_daily_norm$date)
+covid_daily_norm$fips <- as.numeric(covid_daily_norm$fips)
+
+grap1 <- ggplot(covid_daily_norm[covid_daily_norm$date > '2020-02-29'&covid_daily_norm$fips %in%1:12,], aes(x=date, y = daily_deaths_avg, group=state, color=state)) +geom_line() + scale_y_log10()
+
+grap2<- ggplot(covid_daily_norm[covid_daily_norm$date > '2020-02-29'&covid_daily_norm$fips %in%13:24,], aes(x=date, y = daily_deaths_avg, group=state, color=state)) +geom_line() + scale_y_log10()
+
+grap3 <- ggplot(covid_daily_norm[covid_daily_norm$date > '2020-02-29'&covid_daily_norm$fips %in%24:36,], aes(x=date, y = daily_deaths_avg, group=state, color=state)) +geom_line() + scale_y_log10()
+
+grap4 <- ggplot(covid_daily_norm[covid_daily_norm$date > '2020-02-29'&covid_daily_norm$fips %in%37:48,], aes(x=date, y = daily_deaths_avg, group=state, color=state)) +geom_line() + scale_y_log10()
+
+grap5 <- ggplot(covid_daily_norm[covid_daily_norm$date > '2020-02-29'&covid_daily_norm$fips %in%49:80,], aes(x=date, y = daily_deaths_avg, group=state, color=state)) +geom_line() + scale_y_log10()
+
+# grap1
+# grap2
+# grap3
+# grap4
+# grap5
+
+cas1 <- ggplot(covid_daily_norm[covid_daily_norm$date > '2020-02-29'&covid_daily_norm$fips %in%1:12,], aes(x=date, y = daily_cases_avg, group=state, color=state)) +geom_line() + scale_y_log10()
+
+cas2<- ggplot(covid_daily_norm[covid_daily_norm$date > '2020-02-29'&covid_daily_norm$fips %in%13:24,], aes(x=date, y = daily_cases_avg, group=state, color=state)) +geom_line() + scale_y_log10()
+
+cas3 <- ggplot(covid_daily_norm[covid_daily_norm$date > '2020-02-29'&covid_daily_norm$fips %in%24:36,], aes(x=date, y = daily_cases_avg, group=state, color=state)) +geom_line() + scale_y_log10()
+
+cas4 <- ggplot(covid_daily_norm[covid_daily_norm$date > '2020-02-29'&covid_daily_norm$fips %in%37:48,], aes(x=date, y = daily_cases_avg, group=state, color=state)) +geom_line() + scale_y_log10()
+
+cas5 <- ggplot(covid_daily_norm[covid_daily_norm$date > '2020-02-29'&covid_daily_norm$fips %in%49:80,], aes(x=date, y = daily_cases_avg, group=state, color=state)) +geom_line() + scale_y_log10()
+
+cas1
+cas2
+cas3
+cas4
+cas5
