@@ -148,11 +148,11 @@ dailyNyNj<-ggplot(sidebyside2[-(1:55),], aes(x=date)) +
 
 dailyNyNj
 
-ggsave("DailyCases.png", dailyDotLine)
+# ggsave("DailyCases.png", dailyDotLine)
 
 ggsave("DailyCases.svg", dailyDotLine)
 
-ggsave("DailyNY-NJ.png", dailyNyNj)
+# ggsave("DailyNY-NJ.png", dailyNyNj)
 
 ggsave("DailyNY-NJ.svg", dailyNyNj)
 
