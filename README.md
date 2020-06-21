@@ -1,5 +1,5 @@
-<!-- ![Daily COVID-19 Cases in the US](DailyCases.svg) -->
-![Daily COVID-19 Cases in Selected States](DailyNY-NJ.svg)
+![Daily COVID-19 Cases in the U.S. (log scale)](DailyCases.svg)
+![Daily COVID-19 Deaths in Selected States](DailyNY-NJ.svg)
 
 ### *Below is the README as it appears on the* New York Times *COVID-19 GitHub repository*
 # Coronavirus (Covid-19) Data in the United States

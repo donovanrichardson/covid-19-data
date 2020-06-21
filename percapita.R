@@ -86,7 +86,7 @@ covid_daily_norm$date <- as.character(covid_daily_norm$date)
 ranking <- sqldf(sprintf("select date, state, daily_cases_avg, daily_cases_avg_per, daily_deaths_avg, daily_deaths_avg_per, weekly_cases_per100k, weekly_deaths_per100k from covid_daily_norm where date = '%s'", refdate))
 
 # View(ranking)
-View(sqldf("select state, weekly_cases_per100k, weekly_deaths_per100k from ranking"))
+# View(sqldf("select state, weekly_cases_per100k, weekly_deaths_per100k from ranking"))
 
 # View(sqldf('pragma table_info(states)'))
 
