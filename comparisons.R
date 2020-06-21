@@ -92,6 +92,26 @@ dailyLine <- ggplot(sidebyside[-(1:39),], aes(x=date)) +
   scale_y_log10() +
   theme_minimal()
 
+
+dailyCases<-ggplot(sidebyside[-(1:39),], aes(x=date)) +
+  # geom_point(aes(y=daily_cases_usa, color="Nationwide Cases"), size=.6) +
+  # geom_line(aes(y=daily_cases_avg_usa, color="Nationwide Cases"), size=.75) +
+  geom_point(aes(y=daily_cases.nony,color="Cases Outside NYS"), size=.6) +
+  geom_line(aes(y=daily_cases_avg.nony,color="Cases Outside NYS"), size=.75) +
+  geom_point(aes(y=daily_cases.ny,color="NYS Cases"), size=.6) +
+  geom_line(aes(y=daily_cases_avg.ny,color="NYS Cases"), size=.75) +
+  xlab("Date") +
+  ylab("Daily Cases") +
+  labs(title = paste("Daily COVID-19 Cases and Deaths in the US", toDate),
+       caption = "Points are cases reported each day.\nLines are 7-day running averages.\nGraph by Donovan Richardson\nData from The New York Times, based on reports from state and local health agencies.") +
+  scale_y_log10(breaks=c(1,10,100,1000,10000), minor_breaks=c(5,50,500,5000,50000)) +
+  annotation_logticks() +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.caption = element_text(hjust = 0))
+
+dailyCases
+
 #Daily COVID-19 Cases in the US with legend, running 7-day average and deuteranopia colors
 dailyDotLine<-ggplot(sidebyside[-(1:39),], aes(x=date)) +
   geom_point(aes(y=daily_cases_usa, color="Nationwide Cases"), size=.6) +
@@ -150,7 +170,9 @@ dailyNyNj
 
 # ggsave("DailyCases.png", dailyDotLine)
 
-ggsave("DailyCases.svg", dailyDotLine)
+ggsave("DailyCases.svg", dailyCases)
+
+ggsave("DailyDeaths.svg", dailyDotLine)
 
 # ggsave("DailyNY-NJ.png", dailyNyNj)
 
